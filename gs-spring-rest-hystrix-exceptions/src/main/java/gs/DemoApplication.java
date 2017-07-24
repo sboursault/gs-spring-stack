@@ -1,5 +1,6 @@
 package gs;
 
+import com.netflix.hystrix.strategy.HystrixPlugins;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.web.client.RestTemplateBuilder;
@@ -13,6 +14,10 @@ import org.springframework.web.client.RestTemplate;
 @SpringBootApplication
 @EnableCircuitBreaker
 public class DemoApplication {
+
+    static {
+        HystrixPlugins.getInstance().registerCommandExecutionHook(new LogHystrixCommandErrors());
+    }
 
     @Bean
     public RestTemplate rest(RestTemplateBuilder builder) {

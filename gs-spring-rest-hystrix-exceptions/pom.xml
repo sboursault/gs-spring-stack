@@ -4,7 +4,7 @@
 	<modelVersion>4.0.0</modelVersion>
 
 	<groupId>gs</groupId>
-	<artifactId>gs-spring-hystrix</artifactId>
+	<artifactId>gs-spring-rest-hystrix-exceptions</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
 
 	<parent>

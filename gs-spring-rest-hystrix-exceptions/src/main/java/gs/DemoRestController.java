@@ -1,21 +1,14 @@
 package gs;
 
-import com.netflix.hystrix.HystrixCommand;
-import com.netflix.hystrix.exception.HystrixRuntimeException;
+import gs.exception.InvalidCodeException;
+import gs.exception.RemoteServiceFault;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.client.HttpClientErrorException;
-import org.springframework.web.client.RestClientResponseException;
-
-import javax.websocket.server.PathParam;
-import java.time.LocalDate;
-import java.time.temporal.TemporalUnit;
-import java.util.concurrent.TimeoutException;
 
 /**
  * <p>A simple controller, it exposes a "/demo" end point which calls a hystrix command.</p>
