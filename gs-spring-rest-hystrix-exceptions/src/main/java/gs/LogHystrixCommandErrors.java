@@ -13,12 +13,17 @@ import java.lang.reflect.Method;
 /**
  * <p>HystrixCommandExecutionHook used to log errors.</p>
  *
- * Examples of generated logs:
+ * <p>The errors will be logged only if the command fails. Meaning that, if the command has a fallback which runs successfully, nothing will be logged.</p>
+ *
+ * <p>Examples of generated logs:</p>
+ *
  * <pre>
- * 15:38:11.277 WARN [...] g.h.LogHystrixCommandErrors: Hystrix command RemoteServiceAdapter.callRemote[0000] failed due to COMMAND_EXCEPTION
- *   [...stacktrace...]
- * 15:38:09.751 WARN [...] g.h.LogHystrixCommandErrors: Hystrix command RemoteServiceAdapter.callRemote[1234] failed due to TIMEOUT
- *   [...stacktrace...]
+07:24:39.105 WARN [...] gs.LogHystrixCommandErrors: Hystrix command RemoteServiceAdapter.callRemote[1234] failed due to TIMEOUT
+
+07:24:40.208 WARN [...] gs.LogHystrixCommandErrors: Hystrix command RemoteServiceAdapter.callRemote[1234] failed due to COMMAND_EXCEPTION
+org.springframework.web.client.HttpServerErrorException: 500 Internal Server Error
+  at org.springframework.web.client.DefaultResponseErrorHandler.handleError(DefaultResponseErrorHandler.java:94) ~[spring-web-4.3.7.RELEASE.jar:4.3.7.RELEASE]
+  [...]
  * </pre>
  */
 public class LogHystrixCommandErrors extends HystrixCommandExecutionHook {
@@ -28,8 +33,20 @@ public class LogHystrixCommandErrors extends HystrixCommandExecutionHook {
     @Override
     public <T> Exception onError(HystrixInvokable<T> commandInstance, HystrixRuntimeException.FailureType failureType, Exception e) {
         AbstractHystrixCommand command = (AbstractHystrixCommand) commandInstance;
-        LOGGER.warn("Hystrix command {}.{}{} failed due to {}", command.getCommandGroup(), command.getCommandKey(), getArguments(command), failureType, e);
-        return super.onError(commandInstance, failureType, e);
+        switch (failureType) {
+            case TIMEOUT:
+            case SHORTCIRCUIT:
+            case REJECTED_THREAD_EXECUTION:
+            case REJECTED_SEMAPHORE_EXECUTION:
+            case REJECTED_SEMAPHORE_FALLBACK:
+                // don't log stacktrace
+                LOGGER.warn("Hystrix command {}.{}{} failed due to {}", command.getCommandGroup(), command.getCommandKey(), getArguments(command), failureType);
+                break;
+            default:
+                // log stacktrace
+                LOGGER.warn("Hystrix command {}.{}{} failed due to {}", command.getCommandGroup(), command.getCommandKey(), getArguments(command), failureType, e);
+        }
+        return e;
     }
 
     private Object[] getArguments(AbstractHystrixCommand command) {
