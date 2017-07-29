@@ -8,7 +8,9 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
+import java.net.URI;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -39,25 +41,16 @@ public class InmateRestController {
     }
 
     @PostMapping
-    ResponseEntity<?> create(@RequestBody Inmate inmate) throws InvalidDataException {
-        validate(inmate, RequestMethod.POST);
-        return null;
-        //TEST THIS !!!!
+    ResponseEntity<Inmate> create(@RequestBody Inmate entity) throws InvalidDataException {
+        validate(entity, RequestMethod.POST);
+        Inmate persisted = inmateRepository.save(entity);
 
-        //return this.accountRepository
-        //        .findByUsername(userId)
-        //        .map(account -> {
-        //            Bookmark result = bookmarkRepository.save(new Bookmark(account,
-        //                    input.uri, input.description));
-//
-        //            URI location = ServletUriComponentsBuilder
-        //                    .fromCurrentRequest().path("/{id}")
-        //                    .buildAndExpand(result.getId()).toUri();
-//
-        //            return ResponseEntity.created(location).build();
-        //        })
-        //        .orElse(ResponseEntity.noContent().build());
+        URI location = ServletUriComponentsBuilder
+                .fromCurrentRequest().path("/{id}")
+                .buildAndExpand(persisted.getId()).toUri();
 
+        return ResponseEntity.created(location)
+                .body(entity);
     }
 
     private void validate(Inmate inmate, RequestMethod operation) throws InvalidDataException {
