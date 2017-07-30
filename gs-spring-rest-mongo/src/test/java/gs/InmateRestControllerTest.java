@@ -2,8 +2,8 @@
 package gs;
 
 
-import org.assertj.core.api.Assertions;
-import org.hamcrest.Matchers;
+import gs.model.Inmate;
+import io.swagger.annotations.Api;
 import org.json.JSONObject;
 import org.junit.Before;
 import org.junit.Test;
@@ -18,7 +18,6 @@ import org.springframework.test.web.servlet.MvcResult;
 import org.springframework.web.context.WebApplicationContext;
 
 import java.nio.charset.Charset;
-import java.util.Arrays;
 
 import static gs.InmateExamples.thePenguin;
 import static org.assertj.core.api.Assertions.assertThat;
@@ -32,6 +31,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @RunWith(SpringRunner.class)
 @SpringBootTest
 @WebAppConfiguration
+@Api()
 public class InmateRestControllerTest {
 
 
@@ -99,7 +99,7 @@ public class InmateRestControllerTest {
                         .content("{" +
                                 "\"firstname\": \"Harvey\"," +
                                 "\"lastname\": \"Dent\"," +
-                                "\"aka\": [\"Two-Face\"]" +
+                                "\"aka\": [{\"name\": \"Two-Face\"}]" +
                                 "}")
                         .contentType(APPLICATION_JSON))
                 .andExpect(
@@ -111,7 +111,7 @@ public class InmateRestControllerTest {
                 .andExpect(
                         jsonPath("$.lastname", is("Dent")))
                 .andExpect(
-                        jsonPath("$.aka", containsInAnyOrder("Two-Face")))
+                        jsonPath("$.aka[*].name", containsInAnyOrder("Two-Face")))
                 .andReturn();
 
         String id = (String) new JSONObject(result.getResponse().getContentAsString()).get("id");
@@ -128,7 +128,7 @@ public class InmateRestControllerTest {
                         .content("{" +
                                 "\"firstname\": \"Harvey\"," +
                                 "\"lastname\": \"Dent\"," +
-                                "\"aka\": [\"Two-Face\"]" +
+                                "\"aka\": [{\"name\": \"Two-Face\"}]" +
                                 "}")
                         .contentType(APPLICATION_JSON))
                 .andExpect(status().isCreated())

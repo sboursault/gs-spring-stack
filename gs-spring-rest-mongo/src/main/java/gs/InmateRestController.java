@@ -2,7 +2,9 @@ package gs;
 
 import gs.exception.InmateNotFoundException;
 import gs.exception.InvalidDataException;
+import gs.model.Inmate;
 import gs.util.RestPreconditions;
+import io.swagger.annotations.Api;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,11 +19,6 @@ import java.util.List;
 /**
  * <p>A simple rest controller to expose inmates.</p>
  */
-
-
-// GERER POST PUT GET PATCH, LOCATION après la creation
-    // voir aussi swagger, spring rest docs
-
 @RestController
 @RequestMapping("/inmates")
 public class InmateRestController {
@@ -65,8 +62,6 @@ public class InmateRestController {
         if (!errors.isEmpty()) {
             throw new InvalidDataException(errors);
         }
-
     }
-
 
 }
