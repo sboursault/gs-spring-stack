@@ -7,19 +7,41 @@ buildscript {
 	}
 	dependencies {
 		classpath("org.springframework.boot:spring-boot-gradle-plugin:${springBootVersion}")
+//		classpath('se.transmode.gradle:gradle-docker:1.2')
 	}
 }
 
 apply plugin: 'java'
 apply plugin: 'eclipse'
+apply plugin: 'idea'
 apply plugin: 'org.springframework.boot'
+//apply plugin: 'docker'
 
-version = '0.0.1-SNAPSHOT'
-sourceCompatibility = 1.8
+//version = '0.0.1-SNAPSHOT'
+
+
+jar {
+    //baseName = 'gs-spring-boot-docker'
+    version =  '0.1.0'
+}
+
+/*task buildDocker(type: Docker, dependsOn: build) {
+  applicationName = jar.baseName
+  dockerfile = file('Dockerfile')
+  doFirst {
+    copy {
+      from jar
+      into "${stageDir}/target" // for maven/graddle interchangeability	
+    }
+  }
+}*/
 
 repositories {
 	mavenCentral()
 }
+
+sourceCompatibility = 1.8
+targetCompatibility = 1.8
 
 dependencies {
 	compile('org.springframework.boot:spring-boot-starter-web')
