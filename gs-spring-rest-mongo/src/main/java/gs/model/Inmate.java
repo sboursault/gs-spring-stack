@@ -27,6 +27,6 @@ public class Inmate {
     // to represent aka, a simple string could do the job for now (e.g. "Scarecrow"),
     // but a list of objects facilitates future changes:
     // with a list of objects, we can add an aka chronology, without breaking changes for the clients.
-    @ApiModelProperty(example = "abcd1234", position = 3)
+    @ApiModelProperty(position = 3)
     private List<Aka> aka;
 }

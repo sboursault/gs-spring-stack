@@ -21,6 +21,7 @@ Yet to come:
 * project versionning and packaging (should include a snapshot dependency)
 * handle PATCH and PUT operations
 * docker-composed service to facilite creating the dev environment
+* data import with spring integration
 
 Resource:
 https://spring.io/guides/tutorials/bookmarks/
