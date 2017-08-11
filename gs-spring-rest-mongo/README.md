@@ -1,26 +1,28 @@
-# gs-spring-rest-hystrix-exceptions
+# gs-spring-rest-mongo
 
 
 Demo for a rest api representing the Arkham Asylum.
 
-I includes:
-* a swagger ui client
-* error handling
+featuring:
+* a rest api with
+  * error handling,
+  * forward compatible design (see Inmate.aka),
+  * service discovery with HATEOAS principles,
+  * a swagger-ui client
 * a mongo repository
-* tests based on spring's mockMvc
-* forward compatible design (see Inmate.aka)
+* integration tests based on spring's mockMvc and an embedded mongodb
+* a docker-composed development environment
 
 Yet to come: 
 * uri and model versionning
-* service discovery with HATEAOS principles
-* date fields
+* improved discoverability
+* handling date fields
 * decouple storage representation from the one exposed
 * spring rest doc with swagger ?
 (http://www.robwin.eu/documentation-of-a-rest-api-with-swagger-and-asciidoc/, https://spring.io/guides/gs/testing-restdocs/)
 * access restrictions
 * project versionning and packaging (should include a snapshot dependency)
 * handle PATCH and PUT operations
-* docker-composed service to facilite creating the dev environment
 * data import with spring integration
 
 Resource:

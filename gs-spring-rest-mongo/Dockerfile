@@ -1,8 +1,9 @@
 FROM openjdk:8-jdk-alpine
 VOLUME /tmp
-ADD target/arkham-api-0.1.0.jar app.jar
+ADD build/libs/arkham-api-0.1.0.jar app.jar
 # the jar versions should be externalized
 
+#ENV JAVA_OPTS="-Dspring.data.mongodb.uri=mongodb://asylumdb/test"
 ENV JAVA_OPTS=""
 ENTRYPOINT [ "sh", "-c", "java $JAVA_OPTS -Djava.security.egd=file:/dev/./urandom -jar /app.jar" ]
 

@@ -1,5 +1,10 @@
 #!/usr/bin/env bash
 
-gradle build buildDocker
+gradle clean build \
+  && docker-compose up --build
 
-docker run -p 8080:8080 -t sb/arkham-api:0.1.0
+
+# docker down to stop and remove containers
+# check also docker down --volumes
+
+# watch the size of /var/lib/mongodb
