@@ -1,4 +1,4 @@
-# gs-spring-rest-mongo
+# gs-springboot-rest-mongo-docker
 
 
 Demo for a rest api representing the Arkham Asylum.
