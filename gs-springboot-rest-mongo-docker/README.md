@@ -24,6 +24,7 @@ Yet to come:
 * project versionning and packaging (should include a snapshot dependency)
 * handle PATCH and PUT operations
 * data import with spring integration
+* https dev environment
 
 Resource:
 https://spring.io/guides/tutorials/bookmarks/
