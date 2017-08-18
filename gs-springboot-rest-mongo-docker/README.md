@@ -24,7 +24,7 @@ Yet to come:
 * project versionning and packaging (should include a snapshot dependency)
 * handle PATCH and PUT operations
 * data import with spring integration
-* https dev environment
+* https dev environment (https://hub.docker.com/r/marvambass/nginx-ssl-secure/)
 
 Resource:
 https://spring.io/guides/tutorials/bookmarks/
