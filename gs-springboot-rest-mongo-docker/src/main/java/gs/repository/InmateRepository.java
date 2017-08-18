@@ -1,4 +1,4 @@
-package gs;
+package gs.repository;
 
 import gs.model.Inmate;
 import org.springframework.data.mongodb.repository.MongoRepository;

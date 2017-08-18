@@ -3,7 +3,7 @@ package gs;
 
 
 import gs.model.Inmate;
-import org.json.JSONObject;
+import gs.repository.InmateRepository;
 import org.junit.Before;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,8 +14,6 @@ import org.springframework.web.context.WebApplicationContext;
 import static gs.InmateExamples.thePenguin;
 import static org.hamcrest.Matchers.*;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
-import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 import static org.springframework.test.web.servlet.setup.MockMvcBuilders.webAppContextSetup;
 
@@ -57,8 +55,7 @@ public class InmateRestControllerHateoasTest extends RestControllerTest {
                 postJson("/inmates")
                         .content("{" +
                                 "\"firstname\": \"Harvey\"," +
-                                "\"lastname\": \"Dent\"," +
-                                "\"aka\": [{\"name\": \"Two-Face\"}]" +
+                                "\"lastname\": \"Dent\"" +
                                 "}"))
                 .andExpect(status().isCreated())
                 .andExpect(header().string("Location", not(isEmptyString())))

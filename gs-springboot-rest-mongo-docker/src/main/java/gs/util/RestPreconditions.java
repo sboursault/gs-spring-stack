@@ -1,6 +1,7 @@
 package gs.util;
 
 import org.springframework.util.StringUtils;
+import org.springframework.validation.Errors;
 
 import java.util.List;
 
@@ -9,21 +10,21 @@ import java.util.List;
  */
 public class RestPreconditions {
 
-    public static void checkNotNull(Object input, String errorMessage, List<String> errors) {
-        if (input == null) {
-            errors.add(errorMessage);
+    public static void checkNotNull(String field, Object value, String errorMessage, Errors errors) {
+        if (value == null) {
+            errors.reject(field + ".null", errorMessage);
         }
     }
 
-    public static void checkNull(Object input, String errorMessage, List<String> errors) {
-        if (input != null) {
-            errors.add(errorMessage);
+    public static void checkNull(String field, Object value, String errorMessage, Errors errors) {
+        if (value != null) {
+            errors.reject(field + ".not-null", errorMessage);
         }
     }
 
-    public static void checkNotEmpty(String input, String errorMessage, List<String> errors) {
-        if (StringUtils.isEmpty(input)) {
-            errors.add(errorMessage);
+    public static void checkNotEmpty(String field, String value, String errorMessage, Errors errors) {
+        if (StringUtils.isEmpty(value)) {
+            errors.reject(field + ".empty", errorMessage);
         }
     }
 }

@@ -1,4 +1,4 @@
-package gs;
+package gs.controller;
 
 import gs.exception.InmateNotFoundException;
 import gs.exception.InvalidDataException;
@@ -24,8 +24,8 @@ public class RestControllerAdvice {
     @ExceptionHandler({InvalidDataException.class})
     @ResponseStatus(HttpStatus.UNPROCESSABLE_ENTITY)
     public @ResponseBody VndErrors handleUnprocessable(InvalidDataException e) {
-        return new VndErrors(e.getErrorMessages().stream()
-                .map(msg -> new VndErrors.VndError("error", msg))
+        return new VndErrors(e.getErrors().getAllErrors().stream()
+                .map(error -> new VndErrors.VndError("error", error.getDefaultMessage()))
                 .collect(toList()));
     }
 }
