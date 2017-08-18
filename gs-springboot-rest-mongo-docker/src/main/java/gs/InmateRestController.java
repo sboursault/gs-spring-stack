@@ -9,6 +9,7 @@ import io.swagger.annotations.Api;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.hateoas.Link;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -46,19 +47,17 @@ public class InmateRestController {
     }
 
     @PostMapping
-    ResponseEntity<Inmate> create(@RequestBody Inmate entity) throws InvalidDataException {
+    public ResponseEntity<InmateResource> create(@RequestBody Inmate entity) throws InvalidDataException {
         validate(entity, RequestMethod.POST);
         Inmate persisted = inmateRepository.save(entity);
-
-        URI location = ServletUriComponentsBuilder
-                .fromCurrentRequest().path("/{id}")
-                .buildAndExpand(persisted.getId()).toUri();
-
-        return ResponseEntity.created(location)
-                .body(entity);
+        InmateResource response = new InmateResource(persisted);
+        return ResponseEntity
+                .created(response.getLinkSelfAsUri())
+                .body(response);
     }
 
     private void validate(Inmate inmate, RequestMethod operation) throws InvalidDataException {
+        // TODO use spring errors ?
         List<String> errors = new ArrayList<>();
         if (operation == RequestMethod.POST) {
             RestPreconditions.checkNull(inmate.getId(), "id must be null", errors);
