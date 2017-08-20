@@ -43,7 +43,7 @@ public class InmateRestControllerTest extends RestControllerTest {
     @Test
     public void get_ok() throws Exception {
 
-        Inmate penguin = repository.save(thePenguin().id("penguin_1234").build());
+        repository.save(thePenguin().id("penguin_1234").build());
 
         mockMvc.perform(
                         get("/inmates/penguin_1234"))
@@ -67,21 +67,19 @@ public class InmateRestControllerTest extends RestControllerTest {
     @Test
     public void post_incomplete() throws Exception {
         mockMvc.perform(
-                        postJson("/inmates")
-                                .content("{}"))
+                        postJson("/inmates").content("{}"))
                 .andExpect(
                         status().isUnprocessableEntity())
                 .andExpect(
                         jsonPath("$[*].message", containsInAnyOrder(
-                                "firstname must not be empty",
-                                "lastname must not be empty")));
+                                "firstname must not be null or empty",
+                                "lastname must not be null or empty")));
     }
 
     @Test
     public void post_returns_the_persisted_entity() throws Exception {
         MvcResult result = mockMvc.perform(
-                postJson("/inmates")
-                        .content("{" +
+                        postJson("/inmates").content("{" +
                                 "\"firstname\": \"Harvey\"," +
                                 "\"lastname\": \"Dent\"," +
                                 "\"aka\": [{\"name\": \"Two-Face\"}]" +
@@ -101,7 +99,8 @@ public class InmateRestControllerTest extends RestControllerTest {
         String id = (String) new JSONObject(result.getResponse().getContentAsString()).get("id");
 
         mockMvc.perform(
-                get("/inmates/" + id))
-                .andExpect(jsonPath("$.firstname", is("Harvey")));
+                        get("/inmates/" + id))
+                .andExpect(
+                        jsonPath("$.firstname", is("Harvey")));
     }
 }

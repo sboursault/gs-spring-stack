@@ -22,7 +22,7 @@ Yet to come:
 (http://www.robwin.eu/documentation-of-a-rest-api-with-swagger-and-asciidoc/, https://spring.io/guides/gs/testing-restdocs/)
 * access restrictions
 * project versionning and packaging (should include a snapshot dependency)
-* handle PATCH and PUT operations
+* handle PATCH and PUT operations, collection with sort and pagination
 * data import with spring integration
 * https dev environment (https://hub.docker.com/r/marvambass/nginx-ssl-secure/)
 

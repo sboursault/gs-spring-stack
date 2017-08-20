@@ -51,12 +51,12 @@ public class InmateRestController {
 
     private void validate(Inmate inmate, Errors errors, RequestMethod operation) throws InvalidDataException {
         if (operation == POST) {
-            RestPreconditions.checkNull("id", inmate.getId(), "id must be null", errors);
+            RestPreconditions.checkNull("id", inmate.getId(), errors);
         } else {
-            RestPreconditions.checkNotNull("id", inmate.getId(), "id must not be null", errors);
+            RestPreconditions.checkNotNull("id", inmate.getId(), errors);
         }
-        RestPreconditions.checkNotEmpty("lastname", inmate.getLastname(), "lastname must not be empty", errors);
-        RestPreconditions.checkNotEmpty("firstname", inmate.getFirstname(), "firstname must not be empty", errors);
+        RestPreconditions.checkNotEmpty("lastname", inmate.getLastname(), errors);
+        RestPreconditions.checkNotEmpty("firstname", inmate.getFirstname(), errors);
         if (errors.hasErrors()) {
             throw new InvalidDataException(errors);
         }
