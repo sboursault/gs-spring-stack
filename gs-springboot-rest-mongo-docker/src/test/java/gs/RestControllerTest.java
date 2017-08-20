@@ -9,7 +9,8 @@ import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.context.web.WebAppConfiguration;
 import org.springframework.test.web.servlet.request.MockHttpServletRequestBuilder;
 import java.nio.charset.Charset;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 
 
 @RunWith(SpringRunner.class)
@@ -24,5 +25,9 @@ public abstract class RestControllerTest {
 
     protected MockHttpServletRequestBuilder postJson(String url) {
         return post(url).contentType(APPLICATION_JSON);
+    }
+
+    protected MockHttpServletRequestBuilder putJson(String url) {
+        return put(url).contentType(APPLICATION_JSON);
     }
 }

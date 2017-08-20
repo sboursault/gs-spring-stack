@@ -8,16 +8,15 @@ import gs.util.RestPreconditions;
 import io.swagger.annotations.Api;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.util.StringUtils;
 import org.springframework.validation.Errors;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
+import java.util.Objects;
+
+import static gs.util.RestPreconditions.check;
 import static org.springframework.web.bind.annotation.RequestMethod.POST;
+import static org.springframework.web.bind.annotation.RequestMethod.PUT;
 
 /**
  * <p>A simple rest controller to expose inmates.</p>
@@ -32,11 +31,7 @@ public class InmateRestController {
 
     @GetMapping("/{id}")
     public InmateResource get(@PathVariable("id") String id) throws InmateNotFoundException {
-        Inmate inmate = inmateRepository.findOne(id);
-        if (inmate == null) {
-            throw new InmateNotFoundException(id);
-        }
-        return new InmateResource(inmate);
+        return new InmateResource(fetchInmate(id));
     }
 
     @PostMapping
@@ -49,14 +44,40 @@ public class InmateRestController {
                 .body(response);
     }
 
+    @PutMapping("/{id}")
+    public InmateResource update(@PathVariable("id") String id, @RequestBody Inmate entity, Errors errors) throws InvalidDataException, InmateNotFoundException {
+        validateInmateExists(id);
+        if (StringUtils.isEmpty(entity.getId()))
+            entity.setId(id);
+        else
+            check(Objects.equals(id, entity.getId()), "id", "inconsistant ids between the url and the payload", errors);
+        validate(entity, errors, PUT);
+        Inmate persisted = inmateRepository.save(entity);
+        return new InmateResource(persisted);
+    }
+
+    // helpers
+
+    private Inmate fetchInmate(String id) throws InmateNotFoundException {
+        Inmate inmate = inmateRepository.findOne(id);
+        if (inmate == null) {
+            throw new InmateNotFoundException(id);
+        }
+        return inmate;
+    }
+
+    private void validateInmateExists(String id) throws InmateNotFoundException {
+        fetchInmate(id);
+    }
+
     private void validate(Inmate inmate, Errors errors, RequestMethod operation) throws InvalidDataException {
         if (operation == POST) {
-            RestPreconditions.checkNull("id", inmate.getId(), errors);
+            RestPreconditions.checkNull(inmate.getId(), "id", errors);
         } else {
-            RestPreconditions.checkNotNull("id", inmate.getId(), errors);
+            RestPreconditions.checkNotNull(inmate.getId(), "id", errors);
         }
-        RestPreconditions.checkNotEmpty("lastname", inmate.getLastname(), errors);
-        RestPreconditions.checkNotEmpty("firstname", inmate.getFirstname(), errors);
+        RestPreconditions.checkNotEmpty(inmate.getLastname(), "lastname", errors);
+        RestPreconditions.checkNotEmpty(inmate.getFirstname(), "firstname", errors);
         if (errors.hasErrors()) {
             throw new InvalidDataException(errors);
         }

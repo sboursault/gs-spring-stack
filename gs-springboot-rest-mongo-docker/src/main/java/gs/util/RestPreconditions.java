@@ -10,21 +10,27 @@ import java.util.List;
  */
 public class RestPreconditions {
 
-    public static void checkNotNull(String field, Object value, Errors errors) {
+    public static void checkNotNull(String value, String field, Errors errors) {
         if (value == null) {
             errors.reject(field + ".null", field + " must not be null");
         }
     }
 
-    public static void checkNull(String field, Object value, Errors errors) {
+    public static void checkNull(String value, String field, Errors errors) {
         if (value != null) {
             errors.reject(field + ".not-null", field + " must be null");
         }
     }
 
-    public static void checkNotEmpty(String field, String value, Errors errors) {
+    public static void checkNotEmpty(String value, String field, Errors errors) {
         if (StringUtils.isEmpty(value)) {
             errors.reject(field + ".empty", field + " must not be null or empty");
+        }
+    }
+
+    public static void check(boolean test, String field, String errorMessage, Errors errors) {
+        if (!test) {
+            errors.reject(field + ".error", errorMessage);
         }
     }
 }
