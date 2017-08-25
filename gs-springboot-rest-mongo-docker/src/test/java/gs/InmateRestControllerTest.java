@@ -48,6 +48,7 @@ public class InmateRestControllerTest extends RestControllerTest {
 
         mockMvc.perform(
                         get("/inmates/penguin_1234"))
+                .andDo(print())
                 .andExpect(
                         status().isOk())
                 .andExpect(
@@ -66,11 +67,12 @@ public class InmateRestControllerTest extends RestControllerTest {
     }
 
     @Test
-    public void post_success() throws Exception {
+    public void post_success() throws Exception { // also verifies serialization/deserialization
         MvcResult result = mockMvc.perform(
                         postJson("/inmates").content("{" +
                                 "\"firstname\": \"Harvey\"," +
                                 "\"lastname\": \"Dent\"," +
+                                "\"birthDate\": \"1953.01.25\"," +
                                 "\"aka\": [{\"name\": \"Two-Face\"}]" +
                                 "}"))
                 .andExpect(
@@ -81,6 +83,8 @@ public class InmateRestControllerTest extends RestControllerTest {
                         jsonPath("$.firstname", is("Harvey")))
                 .andExpect(
                         jsonPath("$.lastname", is("Dent")))
+                .andExpect(
+                        jsonPath("$.birthDate", is("1953.01.25")))
                 .andExpect(
                         jsonPath("$.aka[*].name", containsInAnyOrder("Two-Face")))
                 .andReturn();
@@ -103,6 +107,24 @@ public class InmateRestControllerTest extends RestControllerTest {
                         jsonPath("$[*].message", containsInAnyOrder(
                                 "firstname must not be null or empty",
                                 "lastname must not be null or empty")));
+    }
+
+    @Test
+    public void post_unknown_field() throws Exception {
+        mockMvc.perform(
+                        postJson("/inmates").content("{" +
+                                "\"firstname\": \"Harvey\"," +
+                                "\"lastname\": \"Dent\"," +
+                                "\"unknown_field\": \"35\"" +
+                                "}"))
+                .andExpect(
+                        status().isCreated())
+                .andExpect(
+                        jsonPath("$.id", not(isEmptyString())))
+                .andExpect(
+                        jsonPath("$.firstname", is("Harvey")))
+                .andExpect(
+                        jsonPath("$.lastname", is("Dent")));
     }
 
     @Test

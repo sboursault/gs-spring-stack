@@ -7,6 +7,7 @@ featuring:
 * a rest api with
   * error handling,
   * forward compatible design (see Inmate.aka),
+  * handling date fields
   * service discovery with HATEOAS principles,
   * a swagger-ui client
 * a mongo repository
@@ -16,7 +17,6 @@ featuring:
 Yet to come: 
 * uri and model versionning
 * improved discoverability
-* handling date fields
 * decouple storage representation from the one exposed
 * spring rest doc with swagger ?
 (http://www.robwin.eu/documentation-of-a-rest-api-with-swagger-and-asciidoc/, https://spring.io/guides/gs/testing-restdocs/)

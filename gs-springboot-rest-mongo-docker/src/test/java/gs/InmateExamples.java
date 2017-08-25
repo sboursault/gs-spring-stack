@@ -4,6 +4,7 @@ package gs;
 import com.google.common.collect.Lists;
 import gs.model.Aka;
 import gs.model.Inmate;
+import java.time.LocalDate;
 
 public class InmateExamples {
 
@@ -13,6 +14,7 @@ public class InmateExamples {
                 .id("penguin_1234")
                 .firstname("Oswald")
                 .lastname("Cobblepot")
+                .birthDate(LocalDate.of(1960, 05, 31))
                 .aka(Lists.newArrayList(Aka.builder().name("Penguin").build()));
     }
 
