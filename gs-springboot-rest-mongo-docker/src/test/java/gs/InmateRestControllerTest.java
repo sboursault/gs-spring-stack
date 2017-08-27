@@ -13,6 +13,7 @@ import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.MvcResult;
 import org.springframework.web.context.WebApplicationContext;
 
+import static gs.InmateExamples.poisonIvy;
 import static gs.InmateExamples.theJoker;
 import static gs.InmateExamples.thePenguin;
 import static org.hamcrest.Matchers.*;
@@ -42,7 +43,24 @@ public class InmateRestControllerTest extends RestControllerTest {
     }
 
     @Test
-    public void get_success() throws Exception {
+    public void find_all() throws Exception {
+
+        repository.save(thePenguin().id("penguin_1234").build());
+        repository.save(theJoker().id("joker_5555").build());
+        repository.save(poisonIvy().id("poisonIvy_7777").build());
+
+        mockMvc.perform(
+                        get("/inmates"))
+                .andDo(print())
+                .andExpect(
+                        status().isOk())
+                .andExpect(
+                        jsonPath("$.results[*].id",
+                                containsInAnyOrder("penguin_1234", "joker_5555", "poisonIvy_7777")));
+    }
+
+    @Test
+    public void find_one_success() throws Exception {
 
         repository.save(thePenguin().id("penguin_1234").build());
 
@@ -56,7 +74,7 @@ public class InmateRestControllerTest extends RestControllerTest {
     }
 
     @Test
-    public void get_unknown() throws Exception {
+    public void find_one_unknown() throws Exception {
         mockMvc.perform(
                         get("/inmates/calendar_man_5678"))
                 .andExpect(

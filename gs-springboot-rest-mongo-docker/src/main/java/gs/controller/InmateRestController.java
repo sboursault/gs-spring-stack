@@ -29,8 +29,13 @@ public class InmateRestController {
     @Autowired
     private InmateRepository inmateRepository;
 
+    @GetMapping
+    public InmatesResource findAll(/*Pageable pageable*/) {
+        return new InmatesResource(inmateRepository.findAll(/*pageable*/));
+    }
+
     @GetMapping("/{id}")
-    public InmateResource get(@PathVariable("id") String id) throws InmateNotFoundException {
+    public InmateResource findById(@PathVariable("id") String id) throws InmateNotFoundException {
         return new InmateResource(fetchInmate(id));
     }
 
@@ -40,7 +45,7 @@ public class InmateRestController {
         Inmate persisted = inmateRepository.save(entity);
         InmateResource response = new InmateResource(persisted);
         return ResponseEntity
-                .created(response.getLinkSelfAsUri())
+                .created(response.getUri())
                 .body(response);
     }
 

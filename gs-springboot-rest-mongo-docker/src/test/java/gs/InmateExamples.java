@@ -25,4 +25,12 @@ public class InmateExamples {
                 .lastname("???")
                 .aka(Lists.newArrayList(Aka.builder().name("Joker").build()));
     }
+
+    public static Inmate.InmateBuilder poisonIvy() {
+        return Inmate.builder()
+                .id("poisonIvy_7777")
+                .firstname("Pamela")
+                .lastname("Isley")
+                .aka(Lists.newArrayList(Aka.builder().name("Poison Ivy").build()));
+    }
 }

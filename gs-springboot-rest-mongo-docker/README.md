@@ -25,6 +25,8 @@ Yet to come:
 * handle PATCH and PUT operations, collection with sort and pagination
 * data import with spring integration
 * https dev environment (https://hub.docker.com/r/marvambass/nginx-ssl-secure/)
+* elastic search index
+* load balancing, shared session storage and log aggregation
 
 Resource:
 https://spring.io/guides/tutorials/bookmarks/
