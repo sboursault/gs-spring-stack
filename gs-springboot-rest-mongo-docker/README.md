@@ -27,6 +27,8 @@ Yet to come:
 * https dev environment (https://hub.docker.com/r/marvambass/nginx-ssl-secure/)
 * elastic search index
 * load balancing, shared session storage and log aggregation
+* blue/greeen deployment
+* discover the api through the browser
 
 Resource:
 https://spring.io/guides/tutorials/bookmarks/

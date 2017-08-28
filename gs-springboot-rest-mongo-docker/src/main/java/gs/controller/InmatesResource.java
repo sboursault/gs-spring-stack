@@ -20,7 +20,8 @@ public class InmatesResource extends ResourceSupport {
 		results = inmates.stream()
 				.map(e -> new InmateResource(e))
 				.collect(toList());
-		add(InmateLink.toCollection());
+		add(Link.toInmateCollection());
+		add(Link.toStart());
 	}
 
 	public List<InmateResource> getResults() {

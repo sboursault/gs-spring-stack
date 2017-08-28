@@ -18,6 +18,8 @@ services:
     #  .:/code
     links:
     - "db:asylumdb" # db service will be reachable with hosts "db" and "asylumdb"
+    environment:
+    - "APP_BASE_URL=http://localhost/api" # overload application propertry "app.base-url"
   db:
     image: "mongo:3.0"
     command: --smallfiles

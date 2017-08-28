@@ -1,6 +1,8 @@
 #!/usr/bin/env bash
 
-gradle clean build \
+
+docker-compose down \
+  && gradle clean build -x test \
   && docker-compose up --build
 
 

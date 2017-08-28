@@ -3,7 +3,6 @@ package gs.controller;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonUnwrapped;
 import gs.model.Inmate;
-import org.springframework.hateoas.Link;
 import org.springframework.hateoas.ResourceSupport;
 
 import java.net.URI;
@@ -19,8 +18,9 @@ public class InmateResource extends ResourceSupport {
 
 	public InmateResource(Inmate entity) {
 		this.inmate = entity;
-		add(InmateLink.toEntity(entity.getId()));
-		add(InmateLink.toCollection());
+		add(Link.toInmate(entity.getId()));
+		add(Link.toInmateCollection());
+		add(Link.toStart());
 	}
 
 	@JsonUnwrapped // avoid having inmate details in a sub node
@@ -30,7 +30,7 @@ public class InmateResource extends ResourceSupport {
 
 	@JsonIgnore
 	public URI getUri() {
-		Link link = getId();
+		org.springframework.hateoas.Link link = getId();
 		return link == null ? null : URI.create(link.getHref());
 	}
 }

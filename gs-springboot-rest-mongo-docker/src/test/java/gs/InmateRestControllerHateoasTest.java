@@ -39,6 +39,16 @@ public class InmateRestControllerHateoasTest extends RestControllerTest {
     }
 
     @Test
+    public void start() throws Exception {
+        mockMvc.perform(
+                        get("/"))
+                .andExpect(
+                        status().isOk())
+                .andExpect(
+                        jsonPath("$._links.inmate-collection.href", is("http://localhost/inmates")));
+    }
+
+    @Test
     public void find_all() throws Exception {
 
         repository.save(thePenguin().id("penguin_1234").build());
@@ -54,7 +64,9 @@ public class InmateRestControllerHateoasTest extends RestControllerTest {
                         jsonPath("$.results[?(@.id == 'joker_5555')]._links.self.href",
                                 contains("http://localhost/inmates/joker_5555")))
                 .andExpect(
-                        jsonPath("$._links.collection.href", is("http://localhost/inmates")));
+                        jsonPath("$._links.collection.href", is("http://localhost/inmates")))
+                .andExpect(
+                        jsonPath("$._links.start.href", is("http://localhost/")));
     }
 
     @Test
@@ -69,7 +81,9 @@ public class InmateRestControllerHateoasTest extends RestControllerTest {
                 .andExpect(
                         jsonPath("$._links.self.href", is("http://localhost/inmates/penguin_1234")))
                 .andExpect(
-                        jsonPath("$._links.collection.href", is("http://localhost/inmates")));
+                        jsonPath("$._links.collection.href", is("http://localhost/inmates")))
+                .andExpect(
+                        jsonPath("$._links.start.href", is("http://localhost/")));
     }
 
     @Test
