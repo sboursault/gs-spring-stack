@@ -4,6 +4,7 @@ import gs.exception.InmateNotFoundException;
 import gs.exception.InvalidDataException;
 import org.springframework.hateoas.VndErrors;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.converter.HttpMessageNotReadableException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -13,6 +14,16 @@ import static java.util.stream.Collectors.toList;
 
 @ControllerAdvice
 public class RestControllerAdvice {
+
+
+    @ExceptionHandler({HttpMessageNotReadableException.class})
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    public @ResponseBody
+    VndErrors handleNotReadable(HttpMessageNotReadableException e) {
+        // redefine the behaviors defined in DefaultHandlerExceptionResolver
+        // to add the exception message in the response body
+        return new VndErrors("error", e.getMessage());
+    }
 
     @ExceptionHandler({InmateNotFoundException.class})
     @ResponseStatus(HttpStatus.NOT_FOUND)

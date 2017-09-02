@@ -17,7 +17,6 @@ import static gs.InmateExamples.poisonIvy;
 import static gs.InmateExamples.theJoker;
 import static gs.InmateExamples.thePenguin;
 import static org.hamcrest.Matchers.*;
-import static org.junit.Assert.fail;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
@@ -154,6 +153,22 @@ public class InmateRestControllerTest extends RestControllerTest {
     }
 
     @Test
+    public void post_invalid_date() throws Exception {
+        mockMvc.perform(
+                        postJson("/inmates").content("{" +
+                                "\"firstname\": \"Harvey\"," +
+                                "\"lastname\": \"Dent\"," +
+                                "\"birthDate\": \"2000_01_01\"" +
+                                "}"))
+                .andDo(print())
+                .andExpect(
+                        status().isBadRequest())
+                .andExpect(
+                        jsonPath("$[0].message", containsString(
+                                "Text '2000_01_01' could not be parsed at index 4")));
+    }
+
+    @Test
     public void update_success() throws Exception {
 
         repository.save(theJoker()
@@ -227,20 +242,6 @@ public class InmateRestControllerTest extends RestControllerTest {
                 .andExpect(
                         jsonPath("$[*].message", containsInAnyOrder(
                                 "inconsistant ids between the url and the payload")));
-    }
-
-    @Test
-    public void update_with_no_content() throws Exception {
-        repository.save(theJoker()
-                .id("joker_5555")
-                .aka(Lists.newArrayList(Aka.builder().name("Joker").build()))
-                .build());
-
-        mockMvc.perform(
-                putJson("/inmates/joker_5555"))
-                .andDo(print())
-                .andExpect(
-                        status().isBadRequest());
     }
 
 }
