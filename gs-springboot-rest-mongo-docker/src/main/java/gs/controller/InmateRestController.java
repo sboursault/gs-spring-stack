@@ -34,7 +34,7 @@ public class InmateRestController {
         return new InmatesResource(inmateRepository.findAll(/*pageable*/));
     }
 
-    @GetMapping("/{id}")
+    @GetMapping(path = "/{id}", produces = {"text/plain"})
     public InmateResource findById(@PathVariable("id") String id) throws InmateNotFoundException {
         return new InmateResource(fetchInmate(id));
     }

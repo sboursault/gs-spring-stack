@@ -2,6 +2,8 @@ package gs.model;
 
 
 import com.fasterxml.jackson.annotation.JsonFormat;
+import com.fasterxml.jackson.annotation.JsonInclude;
+import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Builder;
 import lombok.Data;
@@ -14,6 +16,14 @@ import java.util.List;
 @Document
 @Builder
 @Data
+@JsonInclude(JsonInclude.Include.NON_NULL)
+/*@JsonPropertyOrder({
+        "id",
+        "lastname",
+        "firstname",
+        "birthDate",
+        "aka"
+})*/
 public class Inmate {
 
     @Id

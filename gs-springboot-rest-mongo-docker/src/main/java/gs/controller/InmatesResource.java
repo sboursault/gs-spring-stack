@@ -1,5 +1,6 @@
 package gs.controller;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
 import gs.model.Inmate;
 import org.springframework.hateoas.ResourceSupport;
 
@@ -24,6 +25,7 @@ public class InmatesResource extends ResourceSupport {
 		add(Link.toStart());
 	}
 
+	@JsonProperty("_embedded")
 	public List<InmateResource> getResults() {
 		return results;
 	}

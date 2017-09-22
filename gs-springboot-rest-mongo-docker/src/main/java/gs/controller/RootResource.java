@@ -13,11 +13,7 @@ import java.net.URI;
 public class RootResource extends ResourceSupport {
 
 	public RootResource() {
-		add(Link.toInmateCollection().withRel("inmate-collection"));
-	}
-
-	public String getTest() {
-		return "test";
+		add(Link.toInmateCollection().withRel("inmates"));
 	}
 
 }

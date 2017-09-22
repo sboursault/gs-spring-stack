@@ -25,12 +25,13 @@ shift $((OPTIND-1)) # shift all processed options away from parameters (keep onl
 SERVICES=$*
 
 if [[ " $@ " =~ " api " ]] || [ $# = 0 ]; then
-  # devrait etre lancé aussi quand $# == 0
   echo ""
   echo "===[ building app ]==="
+  echo ""
   (set -x; gradle clean build -x test) # use a subshell and print command (https://stackoverflow.com/a/31392037)
 fi
 
 echo ""
 echo "===[ run docker ]==="
+echo ""
 (set -x; docker-compose up --build $SERVICES)
