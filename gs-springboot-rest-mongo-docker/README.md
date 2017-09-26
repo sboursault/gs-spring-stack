@@ -13,6 +13,7 @@ featuring:
 * a mongo repository
 * integration tests based on spring's mockMvc and an embedded mongodb
 * a docker-composed development environment
+* simple analytics with redis
 
 Yet to come: 
 * uri and model versionning
@@ -29,6 +30,8 @@ Yet to come:
 * load balancing, shared session storage and log aggregation
 * blue/greeen deployment
 * discover the api through the browser
+* add a sort of task engine to rerun failed tasks (spring integration ?)
+* check visual non regression like this: https://medium.com/friday-people/how-we-do-visual-regression-testing-af63fa8b8eb1
 
 Resource:
 https://spring.io/guides/tutorials/bookmarks/
