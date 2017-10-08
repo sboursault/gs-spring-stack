@@ -28,7 +28,7 @@ if [[ " $@ " =~ " api " ]] || [ $# = 0 ]; then
   echo ""
   echo "===[ building app ]==="
   echo ""
-  (set -x; gradle clean build -x test) # use a subshell and print command (https://stackoverflow.com/a/31392037)
+  (set -x; gradle clean build) # use a subshell and print command (https://stackoverflow.com/a/31392037)
 fi
 
 echo ""

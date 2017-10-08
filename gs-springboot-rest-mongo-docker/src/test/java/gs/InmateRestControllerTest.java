@@ -54,7 +54,7 @@ public class InmateRestControllerTest extends RestControllerTest {
                 .andExpect(
                         status().isOk())
                 .andExpect(
-                        jsonPath("$.results[*].id",
+                        jsonPath("$._embedded[*].id",
                                 containsInAnyOrder("penguin_1234", "joker_5555", "poisonIvy_7777")));
     }
 
@@ -92,6 +92,8 @@ public class InmateRestControllerTest extends RestControllerTest {
                                 "\"birthDate\": \"1953.01.25\"," +
                                 "\"aka\": [{\"name\": \"Two-Face\"}]" +
                                 "}"))
+                .andDo(
+                        print())
                 .andExpect(
                         status().isCreated())
                 .andExpect(
@@ -232,10 +234,10 @@ public class InmateRestControllerTest extends RestControllerTest {
                 .build());
 
         mockMvc.perform(
-                putJson("/inmates/joker_5555").content("{" +
-                        "\"id\": \"joker_3333\"," +
-                        "\"firstname\": \"unknown\"," +
-                        "\"lastname\": \"unknown\"}"))
+                        putJson("/inmates/joker_5555").content("{" +
+                                "\"id\": \"joker_3333\"," +
+                                "\"firstname\": \"unknown\"," +
+                                "\"lastname\": \"unknown\"}"))
                 .andDo(print())
                 .andExpect(
                         status().isUnprocessableEntity())

@@ -42,10 +42,12 @@ public class InmateRestControllerHateoasTest extends RestControllerTest {
     public void start() throws Exception {
         mockMvc.perform(
                         get("/"))
+                .andDo(
+                        print())
                 .andExpect(
                         status().isOk())
                 .andExpect(
-                        jsonPath("$._links.inmate-collection.href", is("http://localhost/inmates")));
+                        jsonPath("$._links.inmates.href", is("http://localhost/inmates")));
     }
 
     @Test
@@ -56,12 +58,13 @@ public class InmateRestControllerHateoasTest extends RestControllerTest {
         repository.save(poisonIvy().id("poisonIvy_7777").build());
 
         mockMvc.perform(
-                get("/inmates"))
-                .andDo(print())
+                        get("/inmates"))
+                .andDo(
+                        print())
                 .andExpect(
                         status().isOk())
                 .andExpect(
-                        jsonPath("$.results[?(@.id == 'joker_5555')]._links.self.href",
+                        jsonPath("$._embedded[?(@.id == 'joker_5555')]._links.self.href",
                                 contains("http://localhost/inmates/joker_5555")))
                 .andExpect(
                         jsonPath("$._links.collection.href", is("http://localhost/inmates")))

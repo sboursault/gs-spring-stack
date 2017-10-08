@@ -1,8 +1,6 @@
-package gs.controller;
+package gs.controller.resource;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonUnwrapped;
-import gs.model.Inmate;
+import gs.controller.Link;
 import org.springframework.hateoas.ResourceSupport;
 
 import java.net.URI;

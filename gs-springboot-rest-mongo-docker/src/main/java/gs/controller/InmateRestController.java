@@ -1,5 +1,8 @@
 package gs.controller;
 
+import gs.controller.mapper.InmateMapper;
+import gs.controller.resource.InmateResource;
+import gs.controller.resource.InmatesResource;
 import gs.repository.InmateRepository;
 import gs.exception.InmateNotFoundException;
 import gs.exception.InvalidDataException;
@@ -12,7 +15,9 @@ import org.springframework.util.StringUtils;
 import org.springframework.validation.Errors;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
 import java.util.Objects;
+import java.util.stream.Collectors;
 
 import static gs.util.RestPreconditions.check;
 import static org.springframework.web.bind.annotation.RequestMethod.POST;
@@ -31,34 +36,38 @@ public class InmateRestController {
 
     @GetMapping
     public InmatesResource findAll(/*Pageable pageable*/) {
-        return new InmatesResource(inmateRepository.findAll(/*pageable*/));
+        return convertToResourceList(inmateRepository.findAll(/*pageable*/));
     }
 
-    @GetMapping(path = "/{id}", produces = {"text/plain"})
+    @GetMapping(path = "/{id}")
     public InmateResource findById(@PathVariable("id") String id) throws InmateNotFoundException {
-        return new InmateResource(fetchInmate(id));
+        return convertToResource(fetchInmate(id));
     }
 
     @PostMapping
-    public ResponseEntity<InmateResource> create(@RequestBody Inmate entity, Errors errors) throws InvalidDataException {
-        validate(entity, errors, POST);
+    public ResponseEntity<InmateResource> create(@RequestBody InmateResource input, Errors errors) throws InvalidDataException {
+        Inmate entity = convertToModel(input);
+        validate(entity, errors, POST); // TODO: use an external validator e.g. validator.isValidForRegistration(<>)
         Inmate persisted = inmateRepository.save(entity);
-        InmateResource response = new InmateResource(persisted);
+        InmateResource response = convertToResource(persisted);
         return ResponseEntity
                 .created(response.getUri())
                 .body(response);
     }
 
     @PutMapping("/{id}")
-    public InmateResource update(@PathVariable("id") String id, @RequestBody Inmate entity, Errors errors) throws InvalidDataException, InmateNotFoundException {
+    public InmateResource update(@PathVariable("id") String id, @RequestBody InmateResource input, Errors errors) throws InvalidDataException, InmateNotFoundException {
+        //FIXME: a creation date would be erased.
+        Inmate entity = convertToModel(input);
         validateInmateExists(id);
-        if (StringUtils.isEmpty(entity.getId()))
+        if (StringUtils.isEmpty(entity.getId())) {
             entity.setId(id);
-        else
+        } else {
             check(Objects.equals(id, entity.getId()), "id", "inconsistant ids between the url and the payload", errors);
+        }
         validate(entity, errors, PUT);
         Inmate persisted = inmateRepository.save(entity);
-        return new InmateResource(persisted);
+        return convertToResource(persisted);
     }
 
     // helpers
@@ -86,6 +95,29 @@ public class InmateRestController {
         if (errors.hasErrors()) {
             throw new InvalidDataException(errors);
         }
+    }
+
+    private InmateResource convertToResource(Inmate source) {
+        InmateResource target = InmateMapper.INSTANCE.map(source);
+        target.add(Link.toInmate(source.getId()));
+        target.add(Link.toInmateCollection());
+        target.add(Link.toStart());
+        return target;
+    }
+
+    private Inmate convertToModel(InmateResource source) {
+        return InmateMapper.INSTANCE.map(source);
+    }
+
+    private InmatesResource convertToResourceList(List<Inmate> sources) {
+        List<InmateResource> resources = sources.stream()
+                .map(InmateMapper.INSTANCE::map)
+                .collect(Collectors.toList());
+        resources.forEach(it -> it.add(Link.toInmate(it.getInmateId())));
+        InmatesResource target = new InmatesResource(resources);
+        target.add(Link.toInmateCollection());
+        target.add(Link.toStart());
+        return target;
     }
 
 }

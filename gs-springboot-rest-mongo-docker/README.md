@@ -9,7 +9,8 @@ featuring:
   * forward compatible design (see Inmate.aka),
   * handling date fields
   * service discovery with HATEOAS principles,
-  * a swagger-ui client
+  * a swagger-ui client,
+  * internal and external representations defined in separate classes, mapping realized by mapstruct 
 * a mongo repository
 * integration tests based on spring's mockMvc and an embedded mongodb
 * a docker-composed development environment

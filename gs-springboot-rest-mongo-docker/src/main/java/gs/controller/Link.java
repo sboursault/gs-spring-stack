@@ -29,12 +29,12 @@ public class Link {
     private static final MappingDiscoverer DISCOVERER = new AnnotationMappingDiscoverer(RequestMapping.class);
 
 
-    protected static org.springframework.hateoas.Link toStart() {
+    public static org.springframework.hateoas.Link toStart() {
         String href = uriTo(methodOn(RootRestController.class).start());
         return new org.springframework.hateoas.Link(href).withRel(REL_START);
     }
 
-    protected static org.springframework.hateoas.Link toInmate(String id) {
+    public static org.springframework.hateoas.Link toInmate(String id) {
         try {
             String href = uriTo(methodOn(InmateRestController.class).findById(id), id);
             return new org.springframework.hateoas.Link(href).withSelfRel();
@@ -44,7 +44,7 @@ public class Link {
         }
     }
 
-    protected static org.springframework.hateoas.Link toInmateCollection() {
+    public static org.springframework.hateoas.Link toInmateCollection() {
         String href = uriTo(methodOn(InmateRestController.class).findAll());
         return new org.springframework.hateoas.Link(href).withRel(REL_COLLECTION);
     }

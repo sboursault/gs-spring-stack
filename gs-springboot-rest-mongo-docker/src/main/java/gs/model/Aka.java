@@ -1,14 +1,15 @@
 package gs.model;
 
-import io.swagger.annotations.ApiModelProperty;
+import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
-
-@Builder
 @Data
+@Builder
+@NoArgsConstructor
+@AllArgsConstructor
 public class Aka {
 
-    @ApiModelProperty(example = "Scarecrow")
     private String name;
 }

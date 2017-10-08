@@ -1,5 +1,6 @@
 package gs.controller;
 
+import gs.controller.resource.RootResource;
 import org.springframework.hateoas.ResourceSupport;
 import org.springframework.web.bind.annotation.*;
 
