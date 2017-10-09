@@ -120,6 +120,8 @@ public class InmateRestControllerTest extends RestControllerTest {
     public void post_incomplete() throws Exception {
         mockMvc.perform(
                         postJson("/inmates").content("{}"))
+                .andDo(
+                        print())
                 .andExpect(
                         status().isUnprocessableEntity())
                 .andExpect(

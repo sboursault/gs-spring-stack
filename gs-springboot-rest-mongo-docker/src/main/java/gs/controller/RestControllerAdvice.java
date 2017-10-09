@@ -1,7 +1,7 @@
 package gs.controller;
 
 import gs.exception.InmateNotFoundException;
-import gs.exception.InvalidDataException;
+import gs.exception.InvalidStateException;
 import org.springframework.hateoas.VndErrors;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.converter.HttpMessageNotReadableException;
@@ -32,9 +32,9 @@ public class RestControllerAdvice {
         return new VndErrors("error", e.getMessage());
     }
 
-    @ExceptionHandler({InvalidDataException.class})
+    @ExceptionHandler({InvalidStateException.class})
     @ResponseStatus(HttpStatus.UNPROCESSABLE_ENTITY)
-    public @ResponseBody VndErrors handleUnprocessable(InvalidDataException e) {
+    public @ResponseBody VndErrors handleUnprocessable(InvalidStateException e) {
         return new VndErrors(e.getErrors().getAllErrors().stream()
                 .map(error -> new VndErrors.VndError("error", error.getDefaultMessage()))
                 .collect(toList()));
