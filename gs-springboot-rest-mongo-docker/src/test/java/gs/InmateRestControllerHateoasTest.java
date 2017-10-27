@@ -2,14 +2,12 @@
 package gs;
 
 
-import gs.model.Inmate;
 import gs.repository.InmateRepository;
 import org.junit.Before;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.MvcResult;
-import org.springframework.web.context.WebApplicationContext;
 
 import static gs.InmateExamples.poisonIvy;
 import static gs.InmateExamples.theJoker;
@@ -18,24 +16,18 @@ import static org.hamcrest.Matchers.*;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
-import static org.springframework.test.web.servlet.setup.MockMvcBuilders.webAppContextSetup;
 
-public class InmateRestControllerHateoasTest extends RestControllerTest {
+public class InmateRestControllerHateoasTest extends AbstractRestControllerTest {
 
     @Autowired
     InmateRepository repository;
 
-    private MockMvc mockMvc;
-
     @Autowired
-    private WebApplicationContext webApplicationContext;
+    private MockMvc mockMvc;
 
     @Before
     public void setUp() {
-
         repository.deleteAll();
-
-        mockMvc = webAppContextSetup(webApplicationContext).build();
     }
 
     @Test

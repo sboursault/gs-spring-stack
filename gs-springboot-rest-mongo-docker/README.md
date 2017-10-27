@@ -10,6 +10,7 @@ featuring:
   * handling date fields
   * service discovery with HATEOAS principles,
   * a swagger-ui client,
+  * a spring rest docs documentation
   * internal and external representations defined in separate classes, mapping realized by mapstruct 
 * a mongo repository
 * integration tests based on spring's mockMvc and an embedded mongodb
@@ -20,8 +21,6 @@ Yet to come:
 * uri and model versionning
 * improved discoverability
 * decouple storage representation from the one exposed
-* spring rest doc with swagger ?
-(http://www.robwin.eu/documentation-of-a-rest-api-with-swagger-and-asciidoc/, https://spring.io/guides/gs/testing-restdocs/)
 * access restrictions
 * project versionning and packaging (should include a snapshot dependency)
 * handle PATCH and PUT operations, collection with sort and pagination

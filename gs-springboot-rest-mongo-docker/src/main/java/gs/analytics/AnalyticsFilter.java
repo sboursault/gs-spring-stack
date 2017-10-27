@@ -1,8 +1,7 @@
 package gs.analytics;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.redis.core.ListOperations;
-import org.springframework.data.redis.core.RedisTemplate;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnExpression;
 import org.springframework.data.redis.core.StringRedisTemplate;
 import org.springframework.data.redis.core.ZSetOperations;
 import org.springframework.stereotype.Component;
@@ -22,6 +21,7 @@ import java.util.concurrent.TimeUnit;
  * Register user requests
  */
 @Component
+@ConditionalOnExpression("${asylum.analytics.enabled:true}")
 public class AnalyticsFilter implements Filter {
 
     @Autowired
